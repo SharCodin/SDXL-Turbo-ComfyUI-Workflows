@@ -11,7 +11,7 @@ This repo contains the workflows and Gradio UI from the "How to Use SDXL Turbo i
 
 ## Usage
 - Download and set up Comfy UI and start it
-- Install dependencies with pip install -r requirements.txt
+- Install dependencies with `pip install -r requirements.txt`
 - Place the SDXL Turbo checkpoint in Comfy UI models folder
 - Open `app.py` and 
     - Change `BASE_FOLDER = Path("D:/AI/ComfyUI_windows_portable/ComfyUI")` to your comfyui folder path.
