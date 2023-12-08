@@ -75,7 +75,7 @@ def txt2img_workflow(checkpoint_name, positive_prompt):
         time.sleep(1)
 
 
-def img2img_workflow(checkpoint_name, positive_prompt, input_image, denoising_strength):
+def img2img_workflow(checkpoint_name, positive_prompt, input_image, denoising_strength, steps):
     with open(IMG2IMG, "r") as file_json:
         prompt = json.load(file_json)
 
@@ -83,6 +83,7 @@ def img2img_workflow(checkpoint_name, positive_prompt, input_image, denoising_st
     prompt["3"]["inputs"]["text"] = positive_prompt
     prompt["14"]["inputs"]["seed"] = random.randint(1, 999999999999)
     prompt["14"]["inputs"]["denoise"] = denoising_strength
+    prompt["14"]["inputs"]["steps"] = steps
 
     image = Image.fromarray(input_image)
     min_side = min(image.size)
@@ -132,13 +133,13 @@ def hires_workflow(
     prompt["23"]["inputs"]["sampler_name"] = sampler_name
     prompt["23"]["inputs"]["scheduler"] = scheduler
 
-    image = Image.fromarray(input_image)
-    min_side = min(image.size)
-    scale_factor = 512 / min_side
-    new_size = (round(image.size[0] * scale_factor), round(image.size[1] * scale_factor))
-    resized_image = image.resize(new_size)
+    # image = Image.fromarray(input_image)
+    # min_side = min(image.size)
+    # scale_factor = 512 / min_side
+    # new_size = (round(image.size[0] * scale_factor), round(image.size[1] * scale_factor))
+    # resized_image = image.resize(new_size)
 
-    resized_image.save(str(INPUT_DIR / "input_api.jpg"))
+    input_image.save(str(INPUT_DIR / "input_api.jpg"))
 
     previous_image = get_latest_image()
 
@@ -185,15 +186,19 @@ def main():
 
             with gr.Row():
                 with gr.Column():
-                    denoising_strength = gr.Slider(
-                        minimum=0.00, maximum=1.00, value=0.50, step=0.01, label="Denoising Strength", interactive=True
-                    )
+                    with gr.Row():
+                        denoising_strength = gr.Slider(
+                            minimum=0.00, maximum=1.00, value=0.50, step=0.01, label="Denoising Strength", interactive=True
+                        )
+                        step_count = gr.Slider(
+                            minimum=1, maximum=10, value=3, step=1, label="Steps", interactive=True
+                        )
                     input_img = gr.Image(label="Input Image")
                 with gr.Column():
                     output_img = gr.Image(label="Output", interactive=False)
 
         generate_btn_img2img.click(
-            fn=img2img_workflow, inputs=[base_checkpoint, positive, input_img, denoising_strength], outputs=output_img
+            fn=img2img_workflow, inputs=[base_checkpoint, positive, input_img, denoising_strength, step_count], outputs=output_img
         )
 
         with gr.Tab("HiRes"):
