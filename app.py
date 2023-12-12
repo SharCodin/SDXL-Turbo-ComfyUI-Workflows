@@ -34,6 +34,16 @@ KSAMPLER_NAMES = [
 SCHEDULER_NAMES = ["normal", "karras", "exponential", "sgm_uniform", "simple", "ddim_uniform"]
 
 
+css = """
+.green {
+    border: 3px solid green !important;
+}
+.red {
+    border: 3px solid red !important;
+}
+"""
+
+
 def checkpoint_list():
     return [model.name for model in MODELS_FOLDER.glob("*.safetensors")]
 
@@ -154,7 +164,7 @@ def hires_workflow(
 
 
 def main():
-    with gr.Blocks() as demo:
+    with gr.Blocks(css=css) as demo:
         models = checkpoint_list()
         upscale_models = upscale_checkpoint_list()
 
@@ -166,7 +176,7 @@ def main():
             workflow = TXT2IMG
             with gr.Row():
                 with gr.Column(scale=3):
-                    positive = gr.Textbox(lines=4, placeholder="Positive prompt", container=False)
+                    positive = gr.Textbox(lines=4, placeholder="Positive prompt", container=False, elem_classes="green")
 
                 with gr.Column(scale=1):
                     generate_btn_txt2img = gr.Button("Generate")
@@ -179,7 +189,7 @@ def main():
         with gr.Tab("img2img"):
             with gr.Row():
                 with gr.Column(scale=3):
-                    positive = gr.Textbox(lines=4, placeholder="Positive prompt", container=False)
+                    positive = gr.Textbox(lines=4, placeholder="Positive prompt", container=False, elem_classes="green")
 
                 with gr.Column(scale=1):
                     generate_btn_img2img = gr.Button("Generate")
@@ -204,8 +214,8 @@ def main():
         with gr.Tab("HiRes"):
             with gr.Row():
                 with gr.Column(scale=3):
-                    positive = gr.Textbox(lines=2, placeholder="Positive prompt", container=False)
-                    negative = gr.Textbox(lines=2, placeholder="Negative prompt", container=False)
+                    positive = gr.Textbox(lines=2, placeholder="Positive prompt", container=False, elem_classes="green")
+                    negative = gr.Textbox(lines=2, placeholder="Negative prompt", container=False, elem_classes="red")
 
                 with gr.Column(scale=1):
                     generate_btn_hires = gr.Button("Generate")
