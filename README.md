@@ -21,5 +21,5 @@ This repo contains the workflows and Gradio UI from the "How to Use SDXL Turbo i
 
 Refer to the [video tutorial](https://youtu.be/FUjBB-2qEUM) for detailed guidance on using these workflows and UI.
 
-Credits
+## Credits
 Workflows and Gradio app created by [Code Crafters Corner](https://www.youtube.com/@CodeCraftersCorner). Tutorial published on my YouTube channel.
